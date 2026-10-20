@@ -434,34 +434,104 @@ async function gbAdd(name, message) {
   return { ok: true, fromServer: false, entry: localEntry };
 }
 
-function gbFormatTime(ts) {
-  const d = new Date(ts);
-  const pad = (n) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+/* ---------- 气泡漂浮池 ---------- */
+const GB_MAX_BUBBLES = 15;
+const GB_BUBBLE_COLORS = ["c-mint", "c-peach", "c-sky", "c-lavender", "c-sand", "c-rose"];
+
+function gbSpawnBubble(msg, isInitial = false) {
+  const host = document.getElementById("gb-list");
+  if (!host) return;
+
+  // 移除空状态提示
+  const empty = host.querySelector(".gb-empty");
+  if (empty) empty.remove();
+
+  // 超出上限：淡出最老的气泡
+  const bubbles = host.querySelectorAll(".gb-bubble");
+  if (bubbles.length >= GB_MAX_BUBBLES) {
+    const oldest = bubbles[0];
+    oldest.style.animation = "none";
+    oldest.style.opacity = "0";
+    oldest.style.transition = "opacity 0.6s ease";
+    setTimeout(() => oldest.remove(), 600);
+  }
+
+  const bubble = document.createElement("div");
+  bubble.className = `gb-bubble ${GB_BUBBLE_COLORS[Math.floor(Math.random() * GB_BUBBLE_COLORS.length)]}`;
+  bubble.dataset.id = msg.id;
+
+  // 随机参数：横向位置、漂浮时长、水平漂移
+  const left = Math.random() * 82; // 0-82%
+  const duration = 10 + Math.random() * 8; // 10-18s
+  const drift = (Math.random() - 0.5) * 90; // -45 ~ 45px
+  // 初始加载时用负延迟，让气泡分布在池子各处
+  const delay = isInitial ? -Math.random() * duration : 0;
+
+  bubble.style.left = left + "%";
+  bubble.style.setProperty("--gb-duration", duration + "s");
+  bubble.style.setProperty("--gb-drift", drift + "px");
+  bubble.style.animationDelay = delay + "s";
+
+  bubble.innerHTML = `
+    <div class="gb-bubble-name">${gbEscape(msg.name || "匿名访客")}</div>
+    <div class="gb-bubble-msg">${gbEscape(msg.message)}</div>
+  `;
+
+  // 漂浮结束后移除
+  bubble.addEventListener("animationend", () => bubble.remove());
+
+  host.appendChild(bubble);
 }
 
 function gbRender(list) {
   const host = document.getElementById("gb-list");
   if (!host) return;
+  host.innerHTML = "";
+
   if (!list || list.length === 0) {
     host.innerHTML = `<div class="gb-empty">还没有留言，来做第一个留下痕迹的人吧。</div>`;
     return;
   }
-  // 最新的在最前
-  host.innerHTML = list
-    .slice()
-    .reverse()
-    .map(
-      (m) => `
-    <article class="gb-item" data-id="${m.id}">
-      <div class="gb-item-head">
-        <span class="gb-item-name">${gbEscape(m.name || "匿名访客")}</span>
-        <span class="gb-item-time">${gbFormatTime(m.time)}</span>
-      </div>
-      <div class="gb-item-body">${gbEscape(m.message)}</div>
-    </article>`
-    )
-    .join("");
+
+  // 取最新的 N 条，作为初始气泡分布到池中
+  const recent = list.slice(-GB_MAX_BUBBLES);
+  recent.forEach((msg) => gbSpawnBubble(msg, true));
+}
+
+/* ---------- Realtime 实时同步：别人留言即时飘入 ---------- */
+let gbRealtimeSubscribed = false;
+function gbSubscribeRealtime() {
+  if (!supabaseClient || gbRealtimeSubscribed) return;
+  gbRealtimeSubscribed = true;
+  try {
+    supabaseClient
+      .channel("guestbook-realtime")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "guestbook" },
+        (payload) => {
+          const id = payload.new.id;
+          // 去重：本地刚提交的已经显示过了
+          if (document.querySelector(`.gb-bubble[data-id="${id}"]`)) return;
+          const newMsg = {
+            id,
+            name: payload.new.name,
+            message: payload.new.message,
+            time: new Date(payload.new.created_at).getTime(),
+            fromServer: true,
+          };
+          gbSpawnBubble(newMsg, false);
+        }
+      )
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          console.log("[guestbook] Realtime 已连接，新留言将实时飘入");
+        }
+      });
+  } catch (e) {
+    console.warn("[guestbook] Realtime 订阅失败", e);
+    gbRealtimeSubscribed = false;
+  }
 }
 
 function gbSetStatus(text, type) {
@@ -479,8 +549,13 @@ function initGuestbook() {
   const countEl = document.getElementById("gb-count");
   if (!form) return;
 
-  // 异步加载留言
-  gbLoad().then((list) => gbRender(list)).catch(() => gbRender([]));
+  // 异步加载留言 + 开启实时同步
+  gbLoad()
+    .then((list) => {
+      gbRender(list);
+      gbSubscribeRealtime();
+    })
+    .catch(() => gbRender([]));
 
   // 字数统计
   msgInput.addEventListener("input", () => {
@@ -509,8 +584,8 @@ function initGuestbook() {
       );
       form.reset();
       countEl.textContent = "0";
-      // 重新拉取最新列表
-      gbLoad().then((list) => gbRender(list)).catch(() => {});
+      // 立即显示刚提交的气泡（不等 realtime 回调）
+      if (result.entry) gbSpawnBubble(result.entry, false);
     } else {
       gbSetStatus("保存失败，请稍后重试", "error");
     }
