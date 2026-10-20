@@ -341,6 +341,18 @@ function renderNotes() {
 /* ===================== Guestbook 留言板 ===================== */
 const GB_STORAGE_KEY = "daisy-guestbook-v1";
 
+// Supabase 配置（publishable key 可安全公开；通过 RLS 限制写入）
+const SUPABASE_URL = "https://iqlxbivodrmybdtjmuyo.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_y1r1lwgRIkODt1RBKzMsAg_U_RwyuWh";
+let supabaseClient = null;
+try {
+  if (typeof supabase !== "undefined" && supabase.createClient) {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+} catch (e) {
+  console.warn("[guestbook] Supabase 初始化失败，将使用本地存储", e);
+}
+
 // XSS 防护：转义用户输入
 function gbEscape(str) {
   const div = document.createElement("div");
@@ -348,7 +360,8 @@ function gbEscape(str) {
   return div.innerHTML;
 }
 
-function gbLoad() {
+/* ---------- 本地存储兜底 ---------- */
+function gbLoadLocal() {
   try {
     const raw = localStorage.getItem(GB_STORAGE_KEY);
     return raw ? JSON.parse(raw) : [];
@@ -356,8 +369,7 @@ function gbLoad() {
     return [];
   }
 }
-
-function gbSave(list) {
+function gbSaveLocal(list) {
   try {
     localStorage.setItem(GB_STORAGE_KEY, JSON.stringify(list));
     return true;
@@ -366,17 +378,72 @@ function gbSave(list) {
   }
 }
 
+/* ---------- 读取留言：Supabase 优先，失败回退本地 ---------- */
+async function gbLoad() {
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from("guestbook")
+        .select("id, name, message, created_at")
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      // 统一字段格式
+      return (data || []).map((m) => ({
+        id: m.id,
+        name: m.name,
+        message: m.message,
+        time: new Date(m.created_at).getTime(),
+        fromServer: true,
+      }));
+    } catch (e) {
+      console.warn("[guestbook] 从 Supabase 读取失败，回退本地存储", e);
+    }
+  }
+  return gbLoadLocal();
+}
+
+/* ---------- 写入留言：Supabase 优先，失败回退本地 ---------- */
+async function gbAdd(name, message) {
+  const entry = {
+    name: name.trim() || null,
+    message: message.trim(),
+  };
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from("guestbook")
+        .insert(entry)
+        .select("id, created_at")
+        .single();
+      if (error) throw error;
+      return { ok: true, fromServer: true, entry: { ...entry, id: data.id, time: new Date(data.created_at).getTime() } };
+    } catch (e) {
+      console.warn("[guestbook] 写入 Supabase 失败，回退本地存储", e);
+    }
+  }
+  // 本地兜底
+  const localList = gbLoadLocal();
+  const localEntry = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    ...entry,
+    time: Date.now(),
+    fromServer: false,
+  };
+  localList.push(localEntry);
+  if (!gbSaveLocal(localList)) return { ok: false };
+  return { ok: true, fromServer: false, entry: localEntry };
+}
+
 function gbFormatTime(ts) {
   const d = new Date(ts);
   const pad = (n) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-function gbRender() {
+function gbRender(list) {
   const host = document.getElementById("gb-list");
   if (!host) return;
-  const list = gbLoad();
-  if (list.length === 0) {
+  if (!list || list.length === 0) {
     host.innerHTML = `<div class="gb-empty">还没有留言，来做第一个留下痕迹的人吧。</div>`;
     return;
   }
@@ -387,7 +454,6 @@ function gbRender() {
     .map(
       (m) => `
     <article class="gb-item" data-id="${m.id}">
-      <button class="gb-item-del" aria-label="删除这条留言" data-id="${m.id}">${ICONS.close}</button>
       <div class="gb-item-head">
         <span class="gb-item-name">${gbEscape(m.name || "匿名访客")}</span>
         <span class="gb-item-time">${gbFormatTime(m.time)}</span>
@@ -396,30 +462,6 @@ function gbRender() {
     </article>`
     )
     .join("");
-
-  // 绑定删除
-  host.querySelectorAll(".gb-item-del").forEach((btn) => {
-    btn.addEventListener("click", () => gbDelete(btn.dataset.id));
-  });
-}
-
-function gbAdd(name, message) {
-  const list = gbLoad();
-  const entry = {
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-    name: name.trim(),
-    message: message.trim(),
-    time: Date.now(),
-  };
-  list.push(entry);
-  if (!gbSave(list)) return false;
-  return true;
-}
-
-function gbDelete(id) {
-  const list = gbLoad().filter((m) => m.id !== id);
-  gbSave(list);
-  gbRender();
 }
 
 function gbSetStatus(text, type) {
@@ -437,14 +479,15 @@ function initGuestbook() {
   const countEl = document.getElementById("gb-count");
   if (!form) return;
 
-  gbRender();
+  // 异步加载留言
+  gbLoad().then((list) => gbRender(list)).catch(() => gbRender([]));
 
   // 字数统计
   msgInput.addEventListener("input", () => {
     countEl.textContent = msgInput.value.length;
   });
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = document.getElementById("gb-name").value;
     const message = msgInput.value;
@@ -452,12 +495,22 @@ function initGuestbook() {
       gbSetStatus("请写点什么再提交～", "error");
       return;
     }
-    const ok = gbAdd(name, message);
-    if (ok) {
-      gbSetStatus("留言已收到，谢谢你～", "success");
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    gbSetStatus("正在提交…", "");
+
+    const result = await gbAdd(name, message);
+    submitBtn.disabled = false;
+
+    if (result.ok) {
+      gbSetStatus(
+        result.fromServer ? "留言已收到，谢谢你～" : "留言已存到本地（网络异常，恢复后会同步）",
+        "success"
+      );
       form.reset();
       countEl.textContent = "0";
-      gbRender();
+      // 重新拉取最新列表
+      gbLoad().then((list) => gbRender(list)).catch(() => {});
     } else {
       gbSetStatus("保存失败，请稍后重试", "error");
     }
