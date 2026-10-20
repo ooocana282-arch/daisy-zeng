@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Work & Projects — DAISY ZENG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/tokens.css" />
+<link rel="stylesheet" href="assets/css/components.css" />
+</head>
+<body>
+  <div id="site-nav"></div>
+
+  <main class="container">
+    <section class="section">
+      <div class="section-head reveal">
+        <div class="eyebrow">WORK & PROJECTS</div>
+        <h1 class="heading">做过的事与项目</h1>
+        <p class="body-lg muted" style="margin-top:16px;max-width:600px;">
+          点击卡片查看详情。部分内容为待补充占位，未编造成果数字。
+        </p>
+      </div>
+
+      <div class="project-grid" id="project-grid">
+        <!-- 由 main.js 渲染 -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal 详情（当前页展开） -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal" id="modal-body"></div>
+  </div>
+
+  <div id="site-footer"></div>
+  <button id="back-top" class="back-top" aria-label="返回顶部"></button>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

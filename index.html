@@ -1,20 +1,112 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Daisy Zeng — A Life in Progress. 在实践中探索，在思考中成长。" />
-    <title>Daisy Zeng · A Life in Progress</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DAISY ZENG — A Life in Progress</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/tokens.css" />
+<link rel="stylesheet" href="assets/css/components.css" />
+</head>
+<body>
+  <div id="site-nav"></div>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero container">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="eyebrow hero-eyebrow reveal">A LIFE IN PROGRESS</div>
+          <h1 class="display hero-title reveal">
+            <span class="line">在实践中探索，</span>
+            <span class="line">在思考中<span class="rainbow-word">成长</span>。</span>
+          </h1>
+          <p class="body-lg hero-intro reveal">
+            你好，我是曾梓娟，也可以叫我 Daisy。目前就读于吉林大学国家安全学专业，预计于 2027 年毕业。
+          </p>
+          <p class="hero-intro reveal">
+            我的经历横跨学术研究、数据建模与商业实践。从带队参加全国大学生数据建模竞赛，到在京东接触电商采销业务，再到在字节跳动参与运营支持与流程梳理，我一直在尝试理解问题、寻找解决方案，并把想法落实到行动中。
+          </p>
+          <p class="hero-intro reveal">
+            我认真对待每一项任务，也在不断学习如何更主动地沟通、协作和推动事情向前发展。这里记录我做过的事、思考过的问题，以及一路走来的变化。
+          </p>
+          <div class="hero-keywords reveal">
+            <span class="tag">RESEARCH</span>
+            <span class="tag mint">BUSINESS</span>
+            <span class="tag peach">GROWTH</span>
+          </div>
+          <div class="hero-actions reveal">
+            <a class="btn-cta" href="journey.html">探索我的经历 <span class="arrow">→</span></a>
+            <a class="btn-ghost" href="work.html">查看项目案例 <span class="arrow">→</span></a>
+          </div>
+        </div>
+        <figure class="hero-figure reveal">
+          <img src="assets/images/hero-portrait.jpg" alt="曾梓娟 Daisy 在海边" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- Selected Experiences -->
+    <section class="section container">
+      <div class="section-head reveal">
+        <div class="eyebrow">SELECTED EXPERIENCES</div>
+        <h2 class="heading-sm">代表性经历</h2>
+      </div>
+      <div class="exp-grid">
+        <div class="card exp-card reveal">
+          <div class="tag-row"><span class="tag">COMPETITION</span></div>
+          <h3>National Student Data Modeling Competition</h3>
+          <p>带队完成数据建模竞赛项目并获得一等奖，积累团队组织、问题分析与任务推进经验。</p>
+        </div>
+        <div class="card exp-card reveal">
+          <div class="tag-row"><span class="tag peach">INTERNSHIP</span></div>
+          <h3>Business Practice — JD.com</h3>
+          <p>在京东采销相关实习中接触商品运营、客户反馈、价格风险监测与促销活动。</p>
+        </div>
+        <div class="card exp-card reveal">
+          <div class="tag-row"><span class="tag mint">INTERNSHIP</span></div>
+          <h3>Operations Practice — ByteDance</h3>
+          <p>在字节跳动参与运营支持、跨团队协作及许可证申请流程梳理与 SOP 标准化。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guestbook 留言板 -->
+    <section class="section container" id="guestbook">
+      <div class="section-head reveal">
+        <div class="eyebrow">GUESTBOOK</div>
+        <h2 class="heading-sm">留几句话给我</h2>
+        <p class="body-lg muted" style="margin-top:16px;max-width:560px;">
+          如果你对我的经历、某个项目，或者只是想打个招呼，欢迎在这里留言。每一条我都会认真看。
+        </p>
+      </div>
+
+      <form class="guestbook-form reveal" id="gb-form" autocomplete="off">
+        <div class="gb-field">
+          <label for="gb-name">你的名字 <span style="text-transform:none;letter-spacing:0;color:var(--color-slate-helper);">（可选）</span></label>
+          <input type="text" id="gb-name" name="name" maxlength="30" placeholder="匿名访客" />
+        </div>
+        <div class="gb-field">
+          <label for="gb-message">留言内容</label>
+          <textarea id="gb-message" name="message" maxlength="500" placeholder="想说点什么……" required></textarea>
+          <div class="hint"><span id="gb-count">0</span> / 500</div>
+        </div>
+        <div class="gb-actions">
+          <button type="submit" class="btn-cta">提交留言 <span class="arrow">→</span></button>
+          <span class="gb-status" id="gb-status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+
+      <div class="gb-list reveal" id="gb-list">
+        <!-- 由 main.js 渲染 -->
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <button id="back-top" class="back-top" aria-label="返回顶部"></button>
+  <script src="assets/js/main.js"></script>
+</body>
 </html>
