@@ -832,9 +832,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   word-break: break-word;
   cursor: default;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: gbFloatUp var(--gb-duration, 14s) linear forwards;
+  animation: gbFloatX var(--gb-duration, 16s) linear forwards;
   animation-delay: var(--gb-delay, 0s);
-  will-change: top, opacity, transform;
+  will-change: left, opacity, transform;
+}
+.gb-bubble.reverse {
+  animation-name: gbFloatXRev;
 }
 .gb-bubble:hover {
   animation-play-state: paused;
@@ -845,9 +848,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .gb-bubble-name {
   font-weight: 600;
   font-size: 12px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   opacity: 0.72;
   letter-spacing: 0.02em;
+}
+.gb-bubble-time {
+  font-size: 10px;
+  opacity: 0.5;
+  margin-bottom: 6px;
 }
 .gb-bubble-msg {
   font-size: 13px;
@@ -861,11 +869,19 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .gb-bubble.c-sand { background: rgba(198,182,158,0.24); }
 .gb-bubble.c-rose { background: rgba(200,140,150,0.24); }
 
-@keyframes gbFloatUp {
-  0%   { top: 100%; opacity: 0; transform: translateX(0); }
-  8%   { opacity: 1; }
-  92%  { opacity: 1; }
-  100% { top: -28%; opacity: 0; transform: translateX(var(--gb-drift, 0px)); }
+/* 横向漂浮：左 → 右 */
+@keyframes gbFloatX {
+  0%   { left: -30%; opacity: 0; }
+  6%   { opacity: 1; }
+  94%  { opacity: 1; }
+  100% { left: 110%; opacity: 0; transform: translateY(var(--gb-bob, 0px)); }
+}
+/* 横向漂浮：右 → 左 */
+@keyframes gbFloatXRev {
+  0%   { left: 110%; opacity: 0; }
+  6%   { opacity: 1; }
+  94%  { opacity: 1; }
+  100% { left: -30%; opacity: 0; transform: translateY(var(--gb-bob, 0px)); }
 }
 
 @media (max-width: 640px) {

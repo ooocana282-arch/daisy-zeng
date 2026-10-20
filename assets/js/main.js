@@ -438,6 +438,12 @@ async function gbAdd(name, message) {
 const GB_MAX_BUBBLES = 15;
 const GB_BUBBLE_COLORS = ["c-mint", "c-peach", "c-sky", "c-lavender", "c-sand", "c-rose"];
 
+function gbFormatTime(ts) {
+  const d = new Date(ts);
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 function gbSpawnBubble(msg, isInitial = false) {
   const host = document.getElementById("gb-list");
   if (!host) return;
@@ -457,23 +463,25 @@ function gbSpawnBubble(msg, isInitial = false) {
   }
 
   const bubble = document.createElement("div");
-  bubble.className = `gb-bubble ${GB_BUBBLE_COLORS[Math.floor(Math.random() * GB_BUBBLE_COLORS.length)]}`;
+  const reverse = Math.random() > 0.5; // 随机方向：一半左→右，一半右→左
+  bubble.className = `gb-bubble ${reverse ? "reverse " : ""}${GB_BUBBLE_COLORS[Math.floor(Math.random() * GB_BUBBLE_COLORS.length)]}`;
   bubble.dataset.id = msg.id;
 
-  // 随机参数：横向位置、漂浮时长、水平漂移
-  const left = Math.random() * 82; // 0-82%
-  const duration = 10 + Math.random() * 8; // 10-18s
-  const drift = (Math.random() - 0.5) * 90; // -45 ~ 45px
-  // 初始加载时用负延迟，让气泡分布在池子各处
+  // 随机参数：垂直位置、漂浮时长、上下轻微浮动
+  const top = Math.random() * 78; // 0-78%，避免贴边
+  const duration = 14 + Math.random() * 10; // 14-24s
+  const bob = (Math.random() - 0.5) * 24; // -12 ~ 12px 上下浮动
+  // 初始加载时用负延迟，让气泡分布在路径各处
   const delay = isInitial ? -Math.random() * duration : 0;
 
-  bubble.style.left = left + "%";
+  bubble.style.top = top + "%";
   bubble.style.setProperty("--gb-duration", duration + "s");
-  bubble.style.setProperty("--gb-drift", drift + "px");
+  bubble.style.setProperty("--gb-bob", bob + "px");
   bubble.style.animationDelay = delay + "s";
 
   bubble.innerHTML = `
     <div class="gb-bubble-name">${gbEscape(msg.name || "匿名访客")}</div>
+    <div class="gb-bubble-time">${gbFormatTime(msg.time)}</div>
     <div class="gb-bubble-msg">${gbEscape(msg.message)}</div>
   `;
 
