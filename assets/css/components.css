@@ -830,12 +830,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   word-break: break-word;
   cursor: default;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: gbFloatX var(--gb-duration, 16s) linear forwards;
+  animation: gbFloatX var(--gb-duration, 18s) linear infinite;
   animation-delay: var(--gb-delay, 0s);
   will-change: left, opacity, transform;
-}
-.gb-bubble.reverse {
-  animation-name: gbFloatXRev;
 }
 .gb-bubble:hover {
   animation-play-state: paused;
@@ -870,19 +867,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .gb-bubble.c-coral { background: #f09580; }
 .gb-bubble.c-teal { background: #7ec4b8; }
 
-/* 横向漂浮：左 → 右 */
+/* 横向漂浮：左 → 右（无限循环） */
 @keyframes gbFloatX {
   0%   { left: -30%; opacity: 0; }
   6%   { opacity: 1; }
   94%  { opacity: 1; }
   100% { left: 110%; opacity: 0; transform: translateY(var(--gb-bob, 0px)); }
-}
-/* 横向漂浮：右 → 左 */
-@keyframes gbFloatXRev {
-  0%   { left: 110%; opacity: 0; }
-  6%   { opacity: 1; }
-  94%  { opacity: 1; }
-  100% { left: -30%; opacity: 0; transform: translateY(var(--gb-bob, 0px)); }
 }
 
 @media (max-width: 640px) {

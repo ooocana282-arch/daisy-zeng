@@ -463,13 +463,12 @@ function gbSpawnBubble(msg, isInitial = false) {
   }
 
   const bubble = document.createElement("div");
-  const reverse = Math.random() > 0.5; // 随机方向：一半左→右，一半右→左
-  bubble.className = `gb-bubble ${reverse ? "reverse " : ""}${GB_BUBBLE_COLORS[Math.floor(Math.random() * GB_BUBBLE_COLORS.length)]}`;
+  bubble.className = `gb-bubble ${GB_BUBBLE_COLORS[Math.floor(Math.random() * GB_BUBBLE_COLORS.length)]}`;
   bubble.dataset.id = msg.id;
 
   // 随机参数：垂直位置、漂浮时长、上下轻微浮动
   const top = Math.random() * 78; // 0-78%，避免贴边
-  const duration = 14 + Math.random() * 10; // 14-24s
+  const duration = 16 + Math.random() * 12; // 16-28s
   const bob = (Math.random() - 0.5) * 24; // -12 ~ 12px 上下浮动
   // 初始加载时用负延迟，让气泡分布在路径各处
   const delay = isInitial ? -Math.random() * duration : 0;
@@ -484,9 +483,6 @@ function gbSpawnBubble(msg, isInitial = false) {
     <div class="gb-bubble-time">${gbFormatTime(msg.time)}</div>
     <div class="gb-bubble-msg">${gbEscape(msg.message)}</div>
   `;
-
-  // 漂浮结束后移除
-  bubble.addEventListener("animationend", () => bubble.remove());
 
   host.appendChild(bubble);
 }
