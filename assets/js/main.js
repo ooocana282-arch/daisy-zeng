@@ -436,7 +436,7 @@ async function gbAdd(name, message) {
 
 /* ---------- 气泡漂浮池 ---------- */
 const GB_MAX_BUBBLES = 15;
-const GB_BUBBLE_COLORS = ["c-mint", "c-peach", "c-sky", "c-lavender", "c-sand", "c-rose"];
+const GB_BUBBLE_COLORS = ["c-mint", "c-peach", "c-sky", "c-lavender", "c-sand", "c-rose", "c-lemon", "c-coral", "c-teal"];
 
 function gbFormatTime(ts) {
   const d = new Date(ts);

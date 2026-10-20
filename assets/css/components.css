@@ -824,10 +824,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   min-width: 120px;
   padding: 10px 16px;
   border-radius: 18px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
-  border: 1px solid rgba(255,255,255,0.45);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.5);
   color: var(--color-portrait-ink);
   word-break: break-word;
   cursor: default;
@@ -861,13 +859,16 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   font-size: 13px;
   line-height: 1.5;
 }
-/* 气泡彩色半透明背景 */
-.gb-bubble.c-mint { background: rgba(126,146,118,0.24); }
-.gb-bubble.c-peach { background: rgba(214,167,137,0.24); }
-.gb-bubble.c-sky { background: rgba(138,168,184,0.24); }
-.gb-bubble.c-lavender { background: rgba(176,156,194,0.24); }
-.gb-bubble.c-sand { background: rgba(198,182,158,0.24); }
-.gb-bubble.c-rose { background: rgba(200,140,150,0.24); }
+/* 气泡彩色背景（鲜艳饱和） */
+.gb-bubble.c-mint { background: #a8c4a0; }
+.gb-bubble.c-peach { background: #f0b896; }
+.gb-bubble.c-sky { background: #8fb8d4; }
+.gb-bubble.c-lavender { background: #c4a8d8; }
+.gb-bubble.c-sand { background: #d8c89a; }
+.gb-bubble.c-rose { background: #e8a0ac; }
+.gb-bubble.c-lemon { background: #e8d87a; }
+.gb-bubble.c-coral { background: #f09580; }
+.gb-bubble.c-teal { background: #7ec4b8; }
 
 /* 横向漂浮：左 → 右 */
 @keyframes gbFloatX {
