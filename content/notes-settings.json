@@ -1,0 +1,14 @@
+{
+  "categories": [
+    { "id": "personal", "title": "Personal Notes", "intro": "记录关于工作、成长、选择和日常观察的思考。" },
+    { "id": "frames", "title": "Life in Frames", "intro": "收藏生活里的照片、城市片段、旅行记录和细小发现。" },
+    { "id": "reading", "title": "Reading & Ideas", "intro": "记录真正读过的书、值得保存的观点，以及自己的理解。" },
+    { "id": "review", "title": "Monthly Review", "intro": "回顾每个月做过的事、学到的东西，以及下一阶段想尝试的改变。" }
+  ],
+  "formingAnswers": [
+    "我如何判断一份工作是否适合自己？",
+    "从学校进入职场后，我对认真负责有了什么新的理解？",
+    "怎样区分自己真正想要的东西与外界期待？",
+    "一段经历结束后，什么才是值得带走的收获？"
+  ]
+}

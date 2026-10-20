@@ -1,0 +1,147 @@
+# ============================================================
+# Decap CMS 配置
+# 本地编辑：运行 `npx decap-server` 后访问 /admin
+# 线上编辑：配置 GitHub OAuth（见 README）
+# ============================================================
+
+# 本地开发模式：直接读写本地文件（需要 npx decap-server）
+local_backend: true
+
+# 线上：GitHub backend（OAuth 代理为本站 api/auth 和 api/callback）
+backend:
+  name: github
+  repo: ooocana282-arch/daisy-zeng
+  branch: main
+  base_url: https://daisy-zeng.vercel.app
+  auth_endpoint: api/auth
+
+# 媒体文件
+media_folder: "public/images"
+public_folder: "/images"
+
+# 站点语言
+locale: "zh_Hans"
+
+# 内容集合
+collections:
+  # ---------- 个人资料 ----------
+  - name: "profile"
+    label: "个人资料"
+    files:
+      - name: "profile"
+        label: "个人基础信息"
+        file: "content/profile.json"
+        fields:
+          - { label: "英文名", name: "nameEn", widget: "string" }
+          - { label: "中文名", name: "nameCn", widget: "string" }
+          - { label: "昵称", name: "nickname", widget: "string" }
+          - { label: "学校", name: "university", widget: "string" }
+          - { label: "专业", name: "major", widget: "string" }
+          - { label: "毕业时间", name: "graduation", widget: "string" }
+          - { label: "英文标语", name: "taglineEn", widget: "string" }
+          - { label: "中文副标题", name: "taglineCn", widget: "string" }
+          - label: "关键词"
+            name: "keywords"
+            widget: "list"
+            field: { label: "关键词", name: "keyword", widget: "string" }
+          - { label: "邮箱（可留空）", name: "email", widget: "string", required: false }
+          - { label: "LinkedIn/主页（可留空）", name: "linkedin", widget: "string", required: false }
+          - { label: "电话", name: "phone", widget: "string" }
+
+  # ---------- 人生关键节点 ----------
+  - name: "journey"
+    label: "人生关键节点"
+    files:
+      - name: "journey"
+        label: "时间线节点"
+        file: "content/journey.json"
+        fields:
+          - label: "节点列表"
+            name: "journey"
+            widget: "list"
+            fields:
+              - { label: "ID（英文唯一标识）", name: "id", widget: "string" }
+              - { label: "时间/阶段", name: "period", widget: "string" }
+              - { label: "标题", name: "title", widget: "string" }
+              - { label: "正文描述", name: "body", widget: "text" }
+              - label: "标签"
+                name: "tags"
+                widget: "list"
+                field: { label: "标签", name: "tag", widget: "string" }
+              - label: "相关经历（可选）"
+                name: "related"
+                widget: "list"
+                required: false
+                field: { label: "经历", name: "item", widget: "string" }
+              - { label: "关联项目ID（可选）", name: "projectId", widget: "string", required: false }
+
+  # ---------- 项目与经历 ----------
+  - name: "projects"
+    label: "项目与经历"
+    files:
+      - name: "projects"
+        label: "项目列表"
+        file: "content/projects.json"
+        fields:
+          - label: "项目列表"
+            name: "projects"
+            widget: "list"
+            fields:
+              - { label: "ID（英文唯一标识）", name: "id", widget: "string" }
+              - { label: "编号", name: "no", widget: "string" }
+              - { label: "标题", name: "title", widget: "string" }
+              - label: "分类标签"
+                name: "categories"
+                widget: "list"
+                field: { label: "分类", name: "cat", widget: "string" }
+              - { label: "摘要", name: "summary", widget: "text" }
+              - { label: "封面图路径", name: "cover", widget: "string" }
+              - { label: "是否大卡片展示", name: "featured", widget: "boolean", default: false }
+              - label: "详情章节"
+                name: "sections"
+                widget: "list"
+                fields:
+                  - { label: "章节标题", name: "heading", widget: "string" }
+                  - { label: "章节内容", name: "body", widget: "text" }
+
+  # ---------- 笔记设置 ----------
+  - name: "notes-settings"
+    label: "笔记分类与专栏"
+    files:
+      - name: "notes-settings"
+        label: "笔记设置"
+        file: "content/notes-settings.json"
+        fields:
+          - label: "分类"
+            name: "categories"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "标题", name: "title", widget: "string" }
+              - { label: "介绍", name: "intro", widget: "text" }
+          - label: "正在形成的答案"
+            name: "formingAnswers"
+            widget: "list"
+            field: { label: "问题", name: "q", widget: "string" }
+
+  # ---------- 笔记文章 ----------
+  - name: "notes"
+    label: "笔记文章"
+    files:
+      - name: "notes"
+        label: "文章列表"
+        file: "content/notes.json"
+        fields:
+          - label: "文章列表"
+            name: "notes"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "分类ID", name: "categoryId", widget: "string" }
+              - { label: "标题", name: "title", widget: "string" }
+              - { label: "日期（YYYY-MM-DD）", name: "date", widget: "string" }
+              - label: "标签"
+                name: "tags"
+                widget: "list"
+                field: { label: "标签", name: "tag", widget: "string" }
+              - { label: "摘要", name: "excerpt", widget: "text" }

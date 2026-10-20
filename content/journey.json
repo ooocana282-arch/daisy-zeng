@@ -1,0 +1,51 @@
+[
+  {
+    "id": "undergrad",
+    "period": "本科阶段",
+    "title": "在学习之外，尝试解决真实问题",
+    "body": "本科期间，我参与数据建模竞赛、新媒体部门工作和志愿服务等活动。在团队项目中，我逐渐积累了组织协调、沟通协作与任务推进的经验。",
+    "tags": ["Data Modeling", "Teamwork", "Volunteering"],
+    "related": [
+      "全国大学生数据建模竞赛一等奖",
+      "新媒体部门负责人",
+      "博物馆讲解志愿服务"
+    ],
+    "projectId": "data-modeling"
+  },
+  {
+    "id": "grad",
+    "period": "研究生阶段",
+    "title": "在跨学科背景中建立分析框架",
+    "body": "进入吉林大学攻读国家安全学硕士后，我继续接触学术研究与专业问题分析，也开始思考如何把研究中的思考方式运用到更广泛的现实场景。",
+    "tags": ["Research", "Critical Thinking"],
+    "related": ["吉林大学国家安全学硕士研究生", "优秀研究生"],
+    "projectId": ""
+  },
+  {
+    "id": "jd",
+    "period": "京东实习",
+    "title": "从商品细节理解业务逻辑",
+    "body": "在京东采销相关实习中，我接触了商品运营支持、客户反馈收集、价格风险监测和促销活动等工作，对商品、价格、营销动作与业务结果之间的关系有了更具体的认识。",
+    "tags": ["E-commerce", "Merchandising", "Business Operations"],
+    "related": [],
+    "projectId": "jd-merchandising"
+  },
+  {
+    "id": "bytedance",
+    "period": "2026 · 字节跳动实习",
+    "title": "从完成任务，到理解流程与协作",
+    "body": "在字节跳动的运营实习中，我接触日常运营支持、跨团队协作及许可证申请流程梳理等工作，也参与了相关 SOP 的整理与标准化。这段经历让我有机会进一步理解：面对涉及多个团队的任务，清晰的信息、明确的流程和主动的沟通都很重要。",
+    "tags": ["Operations", "Ownership", "Process Improvement"],
+    "related": [],
+    "projectId": "bytedance-sop"
+  },
+  {
+    "id": "next",
+    "period": "2027 · Next Chapter",
+    "title": "继续探索，逐渐建立自己的方向",
+    "body": "预计于 2027 年 6 月毕业。目前，我正在推进研究生阶段的学习与论文工作，也在探索未来职业发展的可能性。对下一阶段，我没有打算提前写下一个固定答案，而是希望在充分了解自己与不同工作环境的基础上，做出更有依据的选择。",
+    "tags": ["Transition", "Exploration", "Next Chapter"],
+    "related": [],
+    "projectId": ""
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "id": "data-modeling",
+    "no": "01",
+    "title": "全国大学生数据建模竞赛",
+    "categories": ["Project", "Teamwork", "Data Modeling"],
+    "summary": "通过团队协作完成数据建模竞赛项目，并获得一等奖。这段经历可以用来展示我的团队组织、问题分析和任务推进能力。",
+    "cover": "/images/data-modeling.jpg",
+    "featured": true,
+    "sections": [
+      { "heading": "项目背景", "body": "（待补充）说明竞赛的背景、赛题方向与团队规模。" },
+      { "heading": "研究问题", "body": "（待补充）梳理赛题中的核心问题与建模目标。" },
+      { "heading": "我的职责", "body": "（待补充）明确自己在团队中承担的角色与具体分工。" },
+      { "heading": "团队协作与实施过程", "body": "（待补充）记录分工、推进节奏与关键协作节点。" },
+      { "heading": "最终成果", "body": "获得全国大学生数据建模竞赛一等奖。" },
+      { "heading": "复盘与收获", "body": "（待补充）从组织、方法、协作三个维度总结可迁移的经验。" }
+    ]
+  },
+  {
+    "id": "jd-merchandising",
+    "no": "02",
+    "title": "京东采销与商品运营",
+    "categories": ["Experience", "Business", "E-commerce"],
+    "summary": "在电商采销相关实习中，接触商品运营支持、客户反馈收集、价格风险监测与促销活动相关工作，逐渐理解业务细节与经营结果之间的联系。",
+    "cover": "/images/jd.jpg",
+    "featured": false,
+    "sections": [
+      { "heading": "实习背景与岗位职责", "body": "（待补充）所在事业部、岗位与日常职责。" },
+      { "heading": "实际参与的工作", "body": "商品运营支持、客户反馈收集、价格风险监测与促销活动相关工作。" },
+      { "heading": "业务问题与分析", "body": "（待补充）记录遇到的业务问题与分析思路，不使用未经证实的数据。" },
+      { "heading": "我的具体贡献", "body": "（待补充）明确个人负责、参与推动与团队共同完成的部分。" },
+      { "heading": "可以公开展示的工作成果", "body": "（待补充）仅写入可公开、可验证的成果。" },
+      { "heading": "对商业运营的理解", "body": "（待补充）从商品、价格、营销与结果的关系出发，写下自己的理解。" }
+    ]
+  },
+  {
+    "id": "bytedance-sop",
+    "no": "03",
+    "title": "字节跳动跨团队流程梳理与 SOP",
+    "categories": ["Experience", "Ownership", "Process Improvement"],
+    "summary": "参与七项许可证申请流程相关工作，涉及 IT、法务、财务等多个团队，并参与流程梳理与 SOP 文档标准化。",
+    "cover": "/images/bytedance.jpg",
+    "featured": false,
+    "sections": [
+      { "heading": "流程背景", "body": "七项许可证申请流程，涉及 IT、法务、财务等多个团队。" },
+      { "heading": "参与团队与协作关系", "body": "（待补充）梳理涉及的团队与各自职责边界。" },
+      { "heading": "原有流程中实际遇到的问题", "body": "（待补充）记录流程中真实存在的信息、对齐与交接问题。" },
+      { "heading": "我采取的行动", "body": "（待补充）说明自己如何梳理信息、推动沟通并整理文档。" },
+      { "heading": "最终形成的流程材料或文档", "body": "参与相关 SOP 的整理与标准化。" },
+      { "heading": "可以验证的改善", "body": "（待补充）仅写入可验证的改善，不写未核实的效率提升数字。" },
+      { "heading": "复盘与学习", "body": "（待补充）关于跨团队协作、流程与主动沟通的总结。" }
+    ]
+  }
+]

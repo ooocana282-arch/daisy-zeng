@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Daisy Zeng — Editorial Personal Magazine Theme
+   编辑式个人杂志风格 · 低饱和暖色
+   ============================================================ */
+@theme {
+  /* 配色 */
+  --color-ivory: #f5f1e8;          /* 页面背景 */
+  --color-ivory-deep: #ebe7dc;     /* 卡片背景 */
+  --color-sage: #7e9276;           /* 主强调色 */
+  --color-sage-deep: #5f7159;
+  --color-sand: #c6b69e;           /* 辅助色 */
+  --color-charcoal: #333b32;       /* 正文 */
+  --color-muted: #77796d;          /* 次要文字 */
+  --color-line: #d8d2c3;           /* 细分隔线 */
+  --color-paper: #faf8f2;          /* 卡片上浮面 */
+
+  /* 字体族 */
+  --font-serif: "Cormorant Garamond", "Noto Serif SC", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-cn-serif: "Noto Serif SC", "Cormorant Garamond", Georgia, serif;
+
+  /* 容器与间距 */
+  --content-max: 1180px;
+
+  /* 圆角 */
+  --radius-card: 6px;
+
+  /* 过渡 */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  ::selection {
+    background: var(--color-sage);
+    color: var(--color-ivory);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-cn-serif);
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--color-charcoal);
+  }
+  .font-display {
+    font-family: var(--font-serif);
+    font-weight: 500;
+  }
+  a {
+    color: inherit;
+  }
+}
+
+@layer utilities {
+  .container-mag {
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .hairline {
+    border-top: 1px solid var(--color-line);
+  }
+  .link-underline {
+    background-image: linear-gradient(var(--color-sage), var(--color-sage));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.35s var(--ease-soft);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+}
+
+/* 滚动显现 */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease-soft), transform 0.7s var(--ease-soft);
+  will-change: opacity, transform;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* 焦点可达性 */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-sage);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* 滚动条（非必要，仅美化） */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-ivory); }
+::-webkit-scrollbar-thumb { background: var(--color-sand); border-radius: 5px; }
